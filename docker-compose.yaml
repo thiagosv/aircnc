@@ -1,22 +1,52 @@
 version: '3.1'
 
 services:
-  mongo:
+  aircnc.backend:
+    build: ./backend/
+    entrypoint: dockerize -wait tcp://aircnc.mongo:27017 -timeout 40s ./.docker/entrypoint.sh
+    volumes:
+      - ./backend:/var/www
+    restart: always
+    depends_on: 
+      - aircnc.mongo
+    networks: 
+      - aircnc
+    ports:
+      - "3333:3333"
+
+  aircnc.frontend:
+    build: ./frontend/
+    volumes:
+      - ./frontend:/var/www
+    entrypoint: dockerize -wait tcp://aircnc.backend:3333 -timeout 40s ./.docker/entrypoint.sh
+    restart: always
+    depends_on: 
+      - aircnc.backend
+    ports:
+      - "3000:3000"
+    networks: 
+      - aircnc
+
+  aircnc.mongo:
     image: mongo
     restart: always
     ports:
       - "27017:27017"
     networks: 
-      - mongo
+      - aircnc
 
-  mongo-express:
+  aircnc.mongo-express:
     image: mongo-express
+    environment: 
+      ME_CONFIG_MONGODB_SERVER: aircnc.mongo
     restart: always
     ports:
       - "8081:8081"
+    depends_on: 
+      - aircnc.mongo
     networks: 
-      - mongo
+      - aircnc
 
 networks:
-  mongo:
+  aircnc:
     driver: bridge
