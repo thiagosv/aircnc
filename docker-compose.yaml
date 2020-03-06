@@ -3,7 +3,7 @@ version: '3.1'
 services:
   aircnc.backend:
     build: ./backend/
-    entrypoint: dockerize -wait tcp://aircnc.mongo:27017 -timeout 40s ./.docker/entrypoint.sh
+    entrypoint: dockerize -wait tcp://aircnc.mongo:27017 -timeout 40s yarn dev
     volumes:
       - ./backend:/var/www
     restart: always
@@ -16,9 +16,9 @@ services:
 
   aircnc.frontend:
     build: ./frontend/
+    entrypoint: dockerize -wait tcp://aircnc.backend:3333 -timeout 40s yarn start
     volumes:
       - ./frontend:/var/www
-    entrypoint: dockerize -wait tcp://aircnc.backend:3333 -timeout 40s ./.docker/entrypoint.sh
     restart: always
     depends_on: 
       - aircnc.backend

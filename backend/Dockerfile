@@ -8,9 +8,7 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && rm dockerize-alpine-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
 WORKDIR /var/www
-
-RUN yarn install
+COPY . .
+RUN yarn
 
 EXPOSE 3333
-
-ENTRYPOINT [ "yarn", "dev" ]
