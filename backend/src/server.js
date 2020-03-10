@@ -7,7 +7,7 @@ const routes = require('./routes');
 
 const app = express();
 
-mongoose.connect('mongodb://aircnc.mongo:27017/omnistack', {
+mongoose.connect('mongodb://localhost:27017/omnistack', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
