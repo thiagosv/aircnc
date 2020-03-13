@@ -24,8 +24,6 @@ export default function Login({ navigation }) {
 
         const { _id } = response.data;
 
-        console.log(_id);
-
         await AsyncStorage.setItem('user', _id);
         await AsyncStorage.setItem('techs', techs);
 
@@ -33,7 +31,7 @@ export default function Login({ navigation }) {
     }
 
     return (
-        <KeyboardAvoidingView enabled={Platform.OS === 'ios'} behavior="padding" style={styles.container}>
+        <View style={styles.container}>
             <Image source={logo} />
 
             <View style={styles.form}>
@@ -63,7 +61,7 @@ export default function Login({ navigation }) {
                     <Text style={styles.buttonText}>Encontrar spots</Text>
                 </TouchableOpacity>
             </View>
-        </KeyboardAvoidingView>
+        </View>
     );
 }
 
